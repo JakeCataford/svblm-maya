@@ -39,43 +39,42 @@ with identical structure to stage that we use to store production ready assets.
 
 
 def initializePlugin(maya_object):
-    #check if shipper is set...
-    if cmds.optionVar(exists="shipper_dir") == 0
-        showSetupWindow()
+    if cmds.optionVar(exists="shipper_dir") == 0:
+        show_setup_window()
+    else:
+        print cmds.optionVar(q="shipper_dir")
 
-def showSetupWindow():
-    window = cmds.window( title="Set Shipper Directory", widthHeight=(200, 55) )
-    cmds.columnLayout( adjustableColumn=True )
-    cmds.textField( text='Please pick the shipper directory.' )
-    cmds.button( label='Close', command=('shipper.shipper.setupCallback()'))
-    cmds.setParent( '..' )
-    cmds.showWindow( window )
+def uninitializePlugin(maya_object):
+    return True
 
-def setupCallback():
-    #set optionvar for shipper directory
+def show_setup_window():
+    print "No configuration found. Prompting to set a shipper directory."
+    fileName = cmds.fileDialog2(caption="Set the shipper directory", fileMode=3, okCaption="Set Directory")
+    cmds.optionVar(sv=("shipper_dir", fileName[0]))
 
-def shipToStage():
-    # Run cop, whine if things are shit.
-    # Spawn a window to edit description and name, groupings, tags, categories...
-    # On clicking ship in the UI: completeShip()
-    # Export and name FBX file, put in appropriate folder
+def ship_to_stage():
+    raise NotImplementedError()
 
-def completeShipToStage():
+def complete_ship_to_stage():
+    raise NotImplementedError()
     # Check for collisions, is there any object with the same names? (Overwrite?)
     # Create folder, export FBX into folder.
     # Write metadata file (.ship? yaml?)
 
-def openStage():
+def open_stage():
+    raise NotImplementedError()
     # Open window that lists staged assets.
     # Pick one and ship it to production with button click. (ship(assetName))
     # Or open an asset to review it with a button click. (view(assetName))
     # wipe a staged asset (delete(assetName))
 
 def view(assetName):
+    raise NotImplementedError()
     # New maya file, import .fbx from asset. (Setup global vars to populate name fields for shipToStage()?)
 
 def ship(assetName):
     # Check for collisions, confirm update?
+    raise NotImplementedError()
     # Ship to production asset folder. This folder will be linked to in unity.
     # write metadata file.
 

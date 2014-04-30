@@ -43,9 +43,6 @@ def Cop():
     suite = loader.discover(thisDirectory() + "/test")
     runner.run(suite)
 
-def unload():
-    cmds.unloadPlugin()
-
 def initializePlugin(maya_object):
     print "Cop Loaded."
 

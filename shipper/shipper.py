@@ -1,6 +1,6 @@
 import maya.cmds as cmds
 import os
-
+import file_manager
 """
 Svblm Shipper - A 3D Asset Pipeline
 
@@ -62,11 +62,11 @@ def complete_ship_to_stage():
     # Write metadata file (.ship? yaml?)
 
 def open_stage():
-    raise NotImplementedError()
-    # Open window that lists staged assets.
-    # Pick one and ship it to production with button click. (ship(assetName))
-    # Or open an asset to review it with a button click. (view(assetName))
-    # wipe a staged asset (delete(assetName))
+    if(cmds.window("svblm shipper stage", exists=True)):
+        cmds.deleteUI("svblm shipper stage")
+
+    cmds.window("svblm shipper stage", title="SVBLM Shipper: Stage", width=500)
+    file_manager.all_staged_folders()
 
 def view(assetName):
     raise NotImplementedError()

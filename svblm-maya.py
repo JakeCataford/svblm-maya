@@ -20,6 +20,8 @@ def initializePlugin(maya):
 
 
 def uninitializePlugin(maya_object):
+    cmds.flushUndo()
+    cmds.file(new=True, force=True)
     print "---------------------------"
     print "Unloading SVBLM maya suite:"
     print "---------------------------"

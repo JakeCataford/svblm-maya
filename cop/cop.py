@@ -41,7 +41,7 @@ def Cop():
     runner = unittest.TextTestRunner()
     loader = unittest.TestLoader()
     suite = loader.discover(thisDirectory() + "/test")
-    runner.run(suite)
+    return runner.run(suite)
 
 def initializePlugin(maya_object):
     print "Cop Loaded."

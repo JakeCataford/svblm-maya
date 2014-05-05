@@ -1,6 +1,7 @@
 import maya.cmds as cmds
 import os
 import file_manager
+import cop.cop as cop
 """
 Svblm Shipper - A 3D Asset Pipeline
 
@@ -53,7 +54,19 @@ def show_setup_window():
     cmds.optionVar(sv=("shipper_dir", fileName[0]))
 
 def ship_to_stage():
-    raise NotImplementedError()
+    cop_results = cop.Cop()
+    if(cmds.window("svblm_shipper_namer", q=True, exists=True)):
+        cmds.deleteUI("svblm_shipper_namer", window=True)
+
+    cmds.window("svblm_shipper_namer", title="SVBLM Shipper: Export", width=500)
+    cmds.columnLayout();
+    if not cop_results.wasSuccessful():
+        cmds.text("FREEZE! Cop errors reported! Check your console and fix before shipping!")
+    cmds.text("Enter an Asset Name:")
+    cmds.textField("asset_name")
+    cmds.button("ship", command="shipper.complete_ship_to_stage()")
+    cmds.setParent('..')
+    cmds.showWindow("svblm_shipper_namer")
 
 def complete_ship_to_stage():
     raise NotImplementedError()
@@ -62,17 +75,29 @@ def complete_ship_to_stage():
     # Write metadata file (.ship? yaml?)
 
 def open_stage():
-    if(cmds.window("svblm shipper stage", exists=True)):
-        cmds.deleteUI("svblm shipper stage")
+    if(cmds.window("svblm_shipper_stage", q=True, exists=True)):
+        cmds.deleteUI("svblm_shipper_stage", window=True)
 
     cmds.window("svblm shipper stage", title="SVBLM Shipper: Stage", width=500)
-    file_manager.all_staged_folders()
+    staged_items = file_manager.all_staged_folders()
+    print staged_items
+    cmds.columnLayout(width=480)
+    for item in staged_items:
+        print item.split('/')
+        cmds.rowLayout(width=480, numberOfColumns=4)
+        cmds.text(item.split('/')[-2])
+        cmds.button("open", command="shipper.view()")
+        cmds.button("ship", command="shipper.ship()")
+        cmds.button("delete", command="shipper.delete()")
+        cmds.setParent('..')
+        cmds.setParent('..')
+    cmds.showWindow("svblm_shipper_stage")
 
-def view(assetName):
+def view():
     raise NotImplementedError()
     # New maya file, import .fbx from asset. (Setup global vars to populate name fields for shipToStage()?)
 
-def ship(assetName):
+def ship():
     # Check for collisions, confirm update?
     raise NotImplementedError()
     # Ship to production asset folder. This folder will be linked to in unity.

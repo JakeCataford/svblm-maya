@@ -4,8 +4,8 @@ import os
 def all_staged_folders():
     all_folders = []
     for dir in os.walk(shipper_stage_root()):
-        print dir
-        all_folders.append(dir)
+        all_folders.append(dir[0])
+    return all_folders
 
 def shipper_stage_root():
     root = str(shipper_root()) + "/stage/"
@@ -19,6 +19,3 @@ def shipper_root():
         raise "Shipper directory not set!"
     else:
         return cmds.optionVar(q="shipper_dir")
-
-
-
